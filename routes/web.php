@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [MainController::class, 'index']);
-Route::get('detail/{id}', [MainController::class, 'detail'])->where('id', '[0-9]+');
+Route::post('public/detail/{id}', [MainController::class, 'detail'])->where('id', '[0-9]+');
+Route::post('detail/{id}', [MainController::class, 'detail'])->where('id', '[0-9]+');

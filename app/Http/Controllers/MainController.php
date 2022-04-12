@@ -14,17 +14,20 @@ class MainController extends Controller
      */
     public function index()
     {
-        $abc = Todo::all();
+        $not_done = Todo::where('completed', 0)->paginate(5, ['*'], 'not_done');
+        $done = Todo::where('completed', 1)->paginate(5, ['*'], 'done');
         return view('List.ListAll', [
-            'abc' => $abc,
+            'not_done' => $not_done,
+            'done' => $done,
         ]);
     }
 
     public function detail(int $id)
     {
+        $work = Todo::where('id', $id)->first();
         
         return view('List.Detail', [
-
+            'work' => $work,
         ]);
     }
 
