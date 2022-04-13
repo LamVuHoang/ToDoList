@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Todo;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -14,18 +16,26 @@ class MainController extends Controller
      */
     public function index()
     {
-        $not_done = Todo::where('completed', 0)->paginate(5, ['*'], 'not_done');
-        $done = Todo::where('completed', 1)->paginate(5, ['*'], 'done');
+        $not_done = Todo::where('completed', 0)
+            ->orderBy('deadline', 'asc')->paginate(5, ['*'], 'not_done');
+        $done = Todo::where('completed', 1)->paginate(8, ['*'], 'done');
         return view('List.ListAll', [
             'not_done' => $not_done,
             'done' => $done,
         ]);
     }
 
-    public function detail(int $id)
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
     {
         $work = Todo::where('id', $id)->first();
-        
+
         return view('List.Detail', [
             'work' => $work,
         ]);
@@ -52,16 +62,6 @@ class MainController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -91,8 +91,11 @@ class MainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        $destroyed = Todo::find($id);
+        $destroyed->delete();
+
+        return redirect()->back()->with('message', "$id had been deleted");
     }
 }

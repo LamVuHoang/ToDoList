@@ -1,58 +1,130 @@
 @extends('MainPage')
 
-@section('title', 'Home Page');
+@section('title', 'Home Page')
 
 @section('content')
-    <div class="row card">
-        <div class="card card-default">
-            <div class="card-header bg-danger text-white text-center h3">
-                Work Not Done
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    @foreach ($not_done as $item)
-                        <li class="list-group-item">
-                            {{ $item->id }}. {{ $item->subject }}
-                            <form action="{{ url('detail' . '/' . $item->id) }}" method="POST">
-                                @csrf
-                                <input name="" id="" class="btn btn-sm btn-primary float-right" type="submit" value="View">
-                            </form>
-                        </li>
-                        <hr>
-                    @endforeach
-
-                </ul>
+    @if (session('message'))
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    {{ session('message') }}
+                </div>
             </div>
         </div>
-        <div class="col-12">
-            {{ $not_done->appends(['done' => $done->currentPage()])->links('vendor.pagination.Pagination') }}
-        </div>
-    </div>
-
-    <hr class="border border-danger">
-
-    <div class="row card">
-        <div class="card card-default">
-            <div class="card-header text-white bg-primary text-center h3">
-                Work Have Done
+    @endif
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card card-default">
+                <div class="card-header bg-danger text-white text-center h3">
+                    Work Not Done
+                </div>
+                <div class="card-body">
+                    
+                    <ul class="list-group">
+                        @foreach ($not_done as $item)
+                            <li class="list-group-item" style="">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ $item->id }}. {{ $item->subject }}
+                                        <br>
+                                        Deadline: {{ $item->deadline }}
+                                    </div>
+                                    <hr class="border border-secondary">
+                                    <div class="col-2">
+                                        <form action="{{ url('done' . '/' . $item->id) }}" method="POST">
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-success float-right" type="submit"
+                                                value="Done">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('view' . '/' . $item->id) }}" method="POST">
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-primary float-right" type="submit"
+                                                value="View">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('modify' . '/' . $item->id) }}" method="POST">
+                                            @method('PUT')
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-warning float-right" type="submit"
+                                                value="Modify">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('delete' . '/' . $item->id) }}" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-danger float-right" type="submit"
+                                                value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <br>
+                    <div>
+                        {{ $not_done->appends(['done' => $done->currentPage()])->links() }}
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    @foreach ($done as $item)
-                        <li class="list-group-item">
-                            {{ $item->id }}. {{ $item->subject }}
-                            <form action="{{ url('detail' . '/' . $item->id) }}" method="POST">
-                                @csrf
-                                <input name="" id="" class="btn btn-sm btn-primary float-right" type="submit" value="View">
-                            </form>
-                        </li>
-                        <hr>
-                    @endforeach
-                </ul>
-            </div>
         </div>
-        <div class="col-12">
-            {!! $done->appends(['not_done' => $not_done->currentPage()])->links() !!}
+        <div class="col-12 col-md-6">
+            <div class="card card-default">
+                <div class="card-header text-white bg-primary text-center h3">
+                    Work Have Done
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach ($done as $item)
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ $item->id }}. {{ $item->subject }}
+                                    </div>
+                                    <hr class="border border-secondary">
+                                    <div class="col-2">
+                                        <form action="{{ url('done' . '/' . $item->id) }}" method="POST">
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-secondary float-right" type="submit"
+                                                value="NOT Done">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('view' . '/' . $item->id) }}" method="POST">
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-primary float-right" type="submit"
+                                                value="View">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('modify' . '/' . $item->id) }}" method="POST">
+                                            @method('PUT')
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-warning float-right" type="submit"
+                                                value="Modify">
+                                        </form>
+                                    </div>
+                                    <div class="col-2">
+                                        <form action="{{ url('delete' . '/' . $item->id) }}" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <input name="" id="" class="btn btn-sm btn-danger float-right" type="submit"
+                                                value="Delete">
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <br>
+                    <div>
+                        {!! $done->appends(['not_done' => $not_done->currentPage()])->links() !!}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

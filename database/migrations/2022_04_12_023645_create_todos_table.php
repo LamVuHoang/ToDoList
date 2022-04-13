@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('subject');
             $table->text('detail');
+            $table->date('deadline');
             $table->boolean('completed');
             $table->timestamps();
         });

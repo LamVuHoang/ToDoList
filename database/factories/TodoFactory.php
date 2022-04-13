@@ -17,8 +17,9 @@ class TodoFactory extends Factory
     public function definition()
     {
         return [
-            'subject'=> $this->faker->name(),
-            'detail' => $this->faker->sentence(6),
+            'subject'=> $this->faker->sentence(6),
+            'detail' => $this->faker->paragraph(3),
+            'deadline' => $this->faker->dateTimeBetween('now', '+1 month'),
             'completed' => $this->faker->boolean(50),
         ];
     }
