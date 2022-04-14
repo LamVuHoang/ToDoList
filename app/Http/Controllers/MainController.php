@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreToDoList;
 use Illuminate\Http\Request;
 use App\Models\Todo;
 use Carbon\Carbon;
@@ -48,7 +49,7 @@ class MainController extends Controller
      */
     public function create()
     {
-        //
+        return view('List.Create');
     }
 
     /**
@@ -57,9 +58,21 @@ class MainController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreToDoList $request)
     {
-        //
+        $request->validated();
+
+        $activity = new Todo();
+        $activity->subject = $request->subject;
+        $activity->deadline = $request->deadline;
+        if ($request->has('detail')) {
+            $activity->detail = $request->detail;
+        }
+        if ($request->completed) $activity->completed = 1;
+        else $activity->completed = 0;
+
+        $activity->save();
+        return redirect()->to('/');
     }
 
     /**
@@ -94,8 +107,9 @@ class MainController extends Controller
     public function destroy(int $id)
     {
         $destroyed = Todo::find($id);
+        $subject = $destroyed->subject;
         $destroyed->delete();
 
-        return redirect()->back()->with('message', "$id had been deleted");
+        return redirect()->back()->with('message', "$subject had been deleted");
     }
 }

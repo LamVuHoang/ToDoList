@@ -15,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [MainController::class, 'index']);
+Route::get('create', [MainController::class, 'create']);
+Route::post('create', [MainController::class, 'store']);
+Route::post('update/{id}', [MainController::class, 'edit'])->where('id', '[0-9]+');
 Route::post('view/{id}', [MainController::class, 'show'])->where('id', '[0-9]+');
 Route::delete('delete/{id}', [MainController::class, 'destroy'])->where('id', '[0-9]+');

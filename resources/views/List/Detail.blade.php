@@ -1,6 +1,6 @@
 @extends('MainPage')
 
-@section('title', 'Detail');
+@section('title', 'Detail')
 
 @section('content')
     <div class="row">
@@ -20,6 +20,11 @@
                     {{ $work->id }}. {{ $work->subject }}
                     <hr>
                     {{ $work->detail }}
+                    <hr>
+                    <?php
+                    $deadline = new DateTime($work->deadline);
+                    ?>
+                    Deadline: {{ $deadline->format('M d, Y') }}
                 </div>
             </div>
         </div>

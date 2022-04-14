@@ -19,7 +19,7 @@
                     Work Not Done
                 </div>
                 <div class="card-body">
-                    
+
                     <ul class="list-group">
                         @foreach ($not_done as $item)
                             <li class="list-group-item" style="">
@@ -27,7 +27,10 @@
                                     <div class="col-12">
                                         {{ $item->id }}. {{ $item->subject }}
                                         <br>
-                                        Deadline: {{ $item->deadline }}
+                                        <?php
+                                        $deadline = new DateTime($item->deadline);
+                                        ?>
+                                        Deadline: {{ $deadline->format('M d, Y') }}
                                     </div>
                                     <hr class="border border-secondary">
                                     <div class="col-2">
@@ -46,13 +49,16 @@
                                     </div>
                                     <div class="col-2">
                                         <form action="{{ url('modify' . '/' . $item->id) }}" method="POST">
-                                            @method('PUT')
                                             @csrf
                                             <input name="" id="" class="btn btn-sm btn-warning float-right" type="submit"
                                                 value="Modify">
                                         </form>
                                     </div>
                                     <div class="col-2">
+                                        {{-- {{ Form::open(['url' => 'delete/' . $item->id]) }}
+                                        {{ Form::hidden('_method', 'DELETE') }}
+                                        {{ Form::submit('Delete', ['class' => 'btn btn-danger']) }}
+                                        {{ Form::close() }} --}}
                                         <form action="{{ url('delete' . '/' . $item->id) }}" method="POST">
                                             @method('DELETE')
                                             @csrf
