@@ -48,7 +48,7 @@
                                         </form>
                                     </div>
                                     <div class="col-2">
-                                        <form action="{{ url('modify' . '/' . $item->id) }}" method="POST">
+                                        <form action="{{ url('update' . '/' . $item->id) }}" method="GET">
                                             @csrf
                                             <input name="" id="" class="btn btn-sm btn-warning float-right" type="submit"
                                                 value="Modify">
@@ -106,8 +106,7 @@
                                         </form>
                                     </div>
                                     <div class="col-2">
-                                        <form action="{{ url('modify' . '/' . $item->id) }}" method="POST">
-                                            @method('PUT')
+                                        <form action="{{ url('update' . '/' . $item->id) }}" method="GET">
                                             @csrf
                                             <input name="" id="" class="btn btn-sm btn-warning float-right" type="submit"
                                                 value="Modify">

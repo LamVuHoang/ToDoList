@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreToDoList;
+use App\Http\Requests\UpdateTodoListRequest;
 use Illuminate\Http\Request;
 use App\Models\Todo;
 use Carbon\Carbon;
@@ -71,8 +72,12 @@ class MainController extends Controller
         if ($request->completed) $activity->completed = 1;
         else $activity->completed = 0;
 
-        $activity->save();
-        return redirect()->to('/');
+        $result = $activity->save();
+        if ($result == 1) {
+            return redirect()->back()->with('alert', '<div class="alert alert-success">Cập nhật Sản phẩm thành công</div>');
+        } else {
+            return redirect()->back()->with('alert', '<div class="alert alert-danger">Cập nhật Sản phẩm thất bại</div>');
+        }
     }
 
     /**
@@ -81,9 +86,13 @@ class MainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        $activity = Todo::where('id', $id)->first();
+
+        return view('List.Update', [
+            'activity' => $activity,
+        ]);
     }
 
     /**
@@ -93,9 +102,29 @@ class MainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTodoListRequest $request, int $id)
     {
-        //
+        $request->validated();
+
+        $activity = Todo::find($id);
+        if ($request->has('subject')) {
+            $activity->subject = $request->subject;
+        }
+        if ($request->has('deadnine')) {
+            $activity->deadline = $request->deadline;
+        }
+        if ($request->has('detail')) {
+            $activity->detail = $request->detail;
+        }
+        if ($request->completed) $activity->completed = 1;
+        else $activity->completed = 0;
+
+        $result = $activity->save();
+        if ($result == 1) {
+            return redirect()->back()->with('alert', '<div class="alert alert-success">Update Activity Successfully</div>');
+        } else {
+            return redirect()->back()->with('alert', '<div class="alert alert-danger">Failed to Update Activity</div>');
+        }
     }
 
     /**
