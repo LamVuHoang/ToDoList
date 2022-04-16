@@ -12,6 +12,8 @@
 ToDoList is a web application for user to manage their work easily. This application have these features:
 
 - Show all of user's activity, divide what is done and what is not yet done.
+- Create, Read, Update, Delete (CRUD) Activities.
+- Search Activity based on the Title (subject) or the Activity's detail.
 
 ## License
 
