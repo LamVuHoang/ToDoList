@@ -20,7 +20,7 @@
             @endif
             @if (session('alert'))
                 <div class="col-12">
-                    {{ session('alert') }}
+                    {!! session('alert') !!}
                 </div>
             @endif
             <div class="col-2"></div>
